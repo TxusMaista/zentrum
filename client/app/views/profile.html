@@ -1,0 +1,147 @@
+
+<div class="content wide-content">
+    <div class="settings-wrapper" id="pad-wrapper">
+        <div class="row">
+            <!-- avatar column -->
+            <div class="col-md-3 col-md-offset-1 avatar-box">
+                <div class="personal-image">
+                    <img id="pImg" style="margin-bottom:10px;" src="" class="avatar img-circle">
+                    <p style="margin-bottom:5px;">{{user.name}} {{user.surname}}, {{user.rol}}</p>
+                    <ul style="list-style-type: none;" data-ng-switch = "user.rol">
+                    	<li><b>Mail: </b>{{user.email}}</li>
+	                    <div ng-switch-when="estudiante">
+	                    	<li><b>Trabajo: </b>{{user.zona[0]}}/{{user.zona[1]}}, {{user.horario[0]}} - {{user.horario[1]}}</li>
+	                    	<li><b>Especialidad: </b>{{user.especialidades[0]}}, {{user.especialidades[1]}}</li>
+	                    </div>
+	                    <li><b>Teléfono: </b>{{user.telefono}}</li>
+                    </ul>  
+                    <h3 style="font-size:24px;">Tareas</h3>
+                    <!-- <ul class="tareas" style="list-style-type: none;font-size:18px;margin-top:10px;">
+                    	<li ng-click="tarea(this)";>Intalación de Soft<span style="margin-left:10px;font-size:16px;color:red;font-weight:bold">Abierto</span></li>
+                    	<li ng-click="tarea(this)">Diseño web<span style="margin-left:10px;font-size:16px;color:orange;font-weight:bold">Pendiente</span></li>
+                    	<li ng-click="tarea(this)">Repara audio<span style="margin-left:10px;font-size:16px;color:green;font-weight:bold">Cerrado</span></li>
+                    	<li ng-click="tarea(this)">Formateo de ordenador<span style="margin-left:10px;font-size:16px;color:green;font-weight:bold">Cerrado</span></li>
+                    </ul> -->
+                    <ul class="tareas" ng-repeat="tarea in tareas" style="list-style-type: none;font-size:18px;margin-top:10px;">
+                    	<li ng-click="ltarea(this)";>{{tarea.titulo}}<span style="margin-left:10px;font-size:16px;color:{{tarea.color}};font-weight:bold">{{tarea.estado}}</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- edit form column -->
+            <div class="col-md-7 personal-info">
+
+                <div class="custom-calendar-wrap">
+					<div id="custom-inner" class="custom-inner">
+						<div class="custom-header clearfix">
+							<nav>
+								<span id="custom-prev" class="custom-prev"></span>
+								<span id="custom-next" class="custom-next"></span>
+							</nav>
+							<h2 id="custom-month" class="custom-month"></h2>
+							<h3 id="custom-year" class="custom-year"></h3>
+						</div>
+						<div id="calendar" class="fc-calendar-container"></div>
+					</div>
+				</div>
+
+				<div data-ng-switch = "user.rol">
+					<div ng-switch-when="estudiante">
+						<div style="margin:20px 0 10px 0;position:relative;">
+							<div style="position:absolute;font-size:15px;top:5px;left:100px;">
+								<div><b>Objetivo:</b> Ordenador portatil nuevo.</div>
+								<div><b>Descripción:</b> Nuevo ordenador para trabajar en la universidad.</div>
+								<div><b>Progreso:</b> 600€/1.250€</div>
+							</div>
+							<img src="img/mac.png" class="avatar img-circle"/>
+						</div>
+						<div class="progress" style="height:20px;">
+						  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+						    60%
+						  </div>
+						</div>
+					</div>
+					<div ng-switch-when="cliente">
+						<button style="width:70%;margin:20px auto;" class="btn btn-block btn-info" ng-click="ntarea()">Nuevo trabajo</button>
+					</div>
+				</div>
+            </div>
+        </div>            
+    </div>
+</div>
+
+<div id="tarea" style="display:none;">
+	<div ng-click="close()" style="background-color:black;opacity:0.6;width:100%;height:100%;position:absolute;top:0px;left:0px;"></div>
+	<div id="fMove" style="background-color:white;width:600px;position:absolute;top:-100%;left:350px;border-radius:10px;">
+		<h1 style="margin:20px;font-size:27px;">Formateo de ordenador.</h1>
+		<div style="margin:20px 20px 30px 20px;font-size:18px;">
+			<p>Descripción: El ordenador no funciona, me da fallos al iniciar Windows. No consigo entrar en mi cuenta. Me gustaría formatearlo.<p>
+			<p>Cliente: José Pérez<p>
+			<p>Especialidad: Informática</p>
+			<p>Fecha: 10/3/2014</p>
+			<p>Horario: 20.00</p>
+			<p>Zona: Bilbo</p>
+			<p>Estado: <span style="color:orange;">Pendiente</span></p>
+			<p>Dinero recibido: 60€</p>
+		</div>
+	</div>
+</div>
+
+<div id="nTarea" style="display:none;">
+	<div ng-click="nclose()" style="background-color:black;opacity:0.6;width:100%;height:100%;position:absolute;top:0px;left:0px;"></div>
+	<div id="move" style="background-color:white;width:600px;position:absolute;top:-100%;left:350px;border-radius:10px;">
+		<div style="margin:20px 20px 30px 20px;font-size:18px;">
+			<p>Título<input class="form-control" ng-model="ntarea.titulo" type="text"/><p>
+			<p>Descripción<input class="form-control" ng-model="ntarea.descripcion" type="text"/><p>
+			<p>Especialidad<input class="form-control" ng-model="ntarea.especialidad" type="text"/><p>
+			<p>Fecha<input class="form-control" ng-model="ntarea.fecha" type="text"/><p>
+			<p>Horario<input class="form-control" ng-model="ntarea.horario" type="text"/><p>
+			<p>Zona<input class="form-control" ng-model="ntarea.zona" type="text"/><p>
+			<p>Teléfono<input class="form-control" ng-model="ntarea.telefono" type="text"/><p>
+		</div>
+		<button style="width:70%;margin:20px auto;" class="btn btn-block btn-info" ng-click="sendTarea()">Enviar</button>
+	</div>
+</div>
+
+<!-- end main container -->
+<script type="text/javascript">	
+	$(function() {
+	
+		var transEndEventNames = {
+				'WebkitTransition' : 'webkitTransitionEnd',
+				'MozTransition' : 'transitionend',
+				'OTransition' : 'oTransitionEnd',
+				'msTransition' : 'MSTransitionEnd',
+				'transition' : 'transitionend'
+			},
+			transEndEventName = transEndEventNames[ Modernizr.prefixed( 'transition' ) ],
+			$wrapper = $( '#custom-inner' ),
+			$calendar = $( '#calendar' ),
+			cal = $calendar.calendario( {
+				onDayClick : function( $el, $contentEl, dateProperties ) {
+
+					if( $contentEl.length > 0 ) {
+						showEvents( $contentEl, dateProperties );
+					}
+
+				},
+				locate:"Spanish (Spain)",
+				displayWeekAbbr : true
+			} ),
+			$month = $( '#custom-month' ).html( cal.getMonthName() ),
+			$year = $( '#custom-year' ).html( cal.getYear() );
+
+		$( '#custom-next' ).on( 'click', function() {
+			cal.gotoNextMonth( updateMonthYear );
+		} );
+		$( '#custom-prev' ).on( 'click', function() {
+			cal.gotoPreviousMonth( updateMonthYear );
+		} );
+
+		function updateMonthYear() {				
+			$month.html( cal.getMonthName() );
+			$year.html( cal.getYear() );
+		}
+	
+	});
+</script>
